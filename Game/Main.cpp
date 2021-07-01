@@ -36,7 +36,7 @@ bool Update(float dt)
 
 void Draw(Core::Graphics& graphics)
 {
-	shape.Draw(graphics, position, scale);
+	shape.Draw(graphics, position);
 }
 
 int main()

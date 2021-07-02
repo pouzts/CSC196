@@ -1,6 +1,7 @@
 #pragma once
 
-namespace PhoenixEngine {
+namespace PhoenixEngine
+{
 	struct Vector2
 	{
 		float x, y;

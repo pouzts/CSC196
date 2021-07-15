@@ -1,14 +1,13 @@
 #include "Engine.h"
 #include "Actors/Player.h"
 #include "Actors/Enemy.h"
+#include "Actors/Projectile.h"
 
 #include <iostream>
 #include <vector>
 #include <string>
 
 std::vector<PhoenixEngine::Vector2> points = { {-5, -5}, {5, -5}, {0, 10}, {-5, -5} };
-PhoenixEngine::Shape playerShape{ points, PhoenixEngine::Color{ 1, 1, 0 } };
-PhoenixEngine::Shape enemyShape{ points, PhoenixEngine::Color{ 1, 0, 0 } };
 PhoenixEngine::Transform transform{ PhoenixEngine::Vector2{400, 300}, 0, 3 };
 
 const float speed = 250;
@@ -47,6 +46,9 @@ bool Update(float dt)
 
 	//engine.Get<PhoenixEngine::ParticleSystem>()->Create(transform.position, 3, 2, PhoenixEngine::Color::white, 50);
 	
+	scene.GetActor<Player>()->shape->color = PhoenixEngine::Color{ PhoenixEngine::RandomRange(0.0f, 1.0f), PhoenixEngine::RandomRange(0.0f, 1.0f), PhoenixEngine::RandomRange(0.0f, 1.0f) };
+	scene.GetActor<Enemy>()->shape->color = PhoenixEngine::Color{ PhoenixEngine::RandomRange(0.0f, 1.0f), PhoenixEngine::RandomRange(0.0f, 1.0f), PhoenixEngine::RandomRange(0.0f, 1.0f) };
+
 	engine.Update(dt);
 	scene.Update(dt);
 
@@ -65,19 +67,25 @@ void Draw(Core::Graphics& graphics)
 	graphics.DrawString(10, 10, std::to_string(deltaTime).c_str());
 	graphics.DrawString(10, 20, std::to_string(gameTime).c_str());
 	graphics.DrawString(10, 30, std::to_string(1 / deltaTime).c_str());
-
-	graphics.DrawString(10, 40, std::to_string(transform.position.x).c_str());
-	graphics.DrawString(10, 50, std::to_string(transform.position.y).c_str());
+	graphics.DrawString(10, 40, std::to_string(scene.GetActor<Player>()->transform.position.x).c_str());
+	graphics.DrawString(10, 50, std::to_string(scene.GetActor<Player>()->transform.position.y).c_str());
+	graphics.DrawString(10, 60, std::to_string(scene.GetActors<Projectile>().size()).c_str());
 }
 
 void Init()
 {
+	std::shared_ptr<PhoenixEngine::Shape> shape = std::make_shared<PhoenixEngine::Shape>();
+	shape->Load("playershape.txt");
+
+	//std::shared_ptr<PhoenixEngine::Shape> playerShape = std::make_shared<PhoenixEngine::Shape>(points, PhoenixEngine::Color::yellow);
+	std::shared_ptr<PhoenixEngine::Shape> enemyShape = std::make_shared<PhoenixEngine::Shape>(points, PhoenixEngine::Color::blue);
+
 	engine.Get<PhoenixEngine::AudioSystem>()->AddAudio("explosion", "explosion.wav");
-	scene.AddActor(new Player(PhoenixEngine::Transform{ PhoenixEngine::Vector2{400, 300}, 0, 3 }, &playerShape, speed));
+	scene.AddActor(std::make_unique<Player>(PhoenixEngine::Transform{ PhoenixEngine::Vector2{400, 300}, 0, 3 }, shape, speed));
 	
-	for (size_t i = 0; i < 1000; i++)
+	for (size_t i = 0; i < 10; i++)
 	{
-		scene.AddActor(new Enemy(PhoenixEngine::Transform{ PhoenixEngine::Vector2{PhoenixEngine::RandomRange(0.0f, 800.0f), PhoenixEngine::RandomRange(0.0f, 600.0f)}, PhoenixEngine::RandomRange(0.0f, PhoenixEngine::TwoPi), 3 }, &enemyShape, speed));
+		scene.AddActor(std::make_unique<Enemy>(PhoenixEngine::Transform{ PhoenixEngine::Vector2{PhoenixEngine::RandomRange(0.0f, 800.0f), PhoenixEngine::RandomRange(0.0f, 600.0f)}, PhoenixEngine::RandomRange(0.0f, PhoenixEngine::TwoPi), 3 }, enemyShape, speed));
 	}
 }
 

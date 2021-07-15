@@ -4,7 +4,7 @@
 class Player : public PhoenixEngine::Actor
 {
 public:
-	Player(const PhoenixEngine::Transform& transform, PhoenixEngine::Shape* shape, float speed) : Actor{ transform, shape }, speed{speed} {}
+	Player(const PhoenixEngine::Transform& transform, std::shared_ptr<PhoenixEngine::Shape> shape, float speed) : Actor{ transform, shape }, speed{speed} {}
 
 	void Update(float dt) override;
 

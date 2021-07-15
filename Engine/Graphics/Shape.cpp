@@ -1,4 +1,5 @@
 #include "Shape.h"
+#include <fstream>
 
 namespace PhoenixEngine {
 	void Shape::Draw(Core::Graphics& graphics, const Vector2 position, float angle, float scale) {
@@ -23,5 +24,32 @@ namespace PhoenixEngine {
 
 			graphics.DrawLine(p1.x, p1.y, p2.x, p2.y);
 		}
+	}
+	
+	bool Shape::Load(const std::string& filename)
+	{
+		bool success = false;
+
+		std::ifstream stream(filename);
+		if (stream.is_open())
+		{
+			success = true;
+
+			color = Color::yellow;
+
+			std::string line;
+			std::getline(stream, line);
+
+			size_t size = std::stoi(line);
+
+			for (size_t i = 0; i < size; i++)
+			{
+				PhoenixEngine::Vector2 point;
+				stream >> point;
+				points.push_back(point);
+			}
+		}
+
+		return success;
 	}
 }

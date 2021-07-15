@@ -3,6 +3,7 @@
 #include "Math/Color.h"
 #include "Math/Transform.h"
 #include <vector>
+#include <string>
 
 namespace PhoenixEngine
 {
@@ -15,7 +16,9 @@ namespace PhoenixEngine
 		void Draw(Core::Graphics& graphics, const Vector2 position, float angle, float scale = 1);
 		void Draw(Core::Graphics& graphics, const Transform& transform);
 
-	private:
+		bool Load(const std::string& filename);
+
+	public:
 		std::vector<Vector2> points;
 		Color color;
 	};

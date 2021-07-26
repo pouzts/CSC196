@@ -21,6 +21,9 @@
     <Filter Include="Source\Audio">
       <UniqueIdentifier>{5ab636a7-a2d4-434b-86d7-a488c5a12f4c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Framework">
+      <UniqueIdentifier>{0d943a1a-2746-4fe2-b0a3-83f8246e4f42}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Math\Vector2.h">
@@ -62,6 +65,15 @@
     <ClInclude Include="Base\Scene.h">
       <Filter>Source\Base</Filter>
     </ClInclude>
+    <ClInclude Include="Framework\EventSystem.h">
+      <Filter>Source\Framework</Filter>
+    </ClInclude>
+    <ClInclude Include="Framework\ResourceSystem.h">
+      <Filter>Source\Framework</Filter>
+    </ClInclude>
+    <ClInclude Include="Math\Matrix22.h">
+      <Filter>Source\Math</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Graphics\ParticleSystem.cpp">
@@ -90,6 +102,12 @@
     </ClCompile>
     <ClCompile Include="Base\Scene.cpp">
       <Filter>Source\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="Framework\EventSystem.cpp">
+      <Filter>Source\Framework</Filter>
+    </ClCompile>
+    <ClCompile Include="Math\Transform.cpp">
+      <Filter>Source\Math</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

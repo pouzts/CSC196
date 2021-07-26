@@ -1,15 +1,36 @@
 #include "Scene.h"
 #include "Base/Actor.h"
+#include <algorithm>
 
 namespace PhoenixEngine
 {
 	void Scene::Update(float dt)
 	{
-		for (auto& actor : actors)
+		// add new actors
+		actors.insert(actors.end(), std::make_move_iterator(newActors.begin()), std::make_move_iterator(newActors.end()));
+		newActors.clear();
+		
+		// update actors
+		std::for_each(actors.begin(), actors.end(), [dt](auto& actor) {actor->Update(dt); });
+
+		// check collisions
+		for (size_t i = 0; i < actors.size(); i++) 
 		{
-			actor->Update(dt);
+			for (size_t j = i + 1; j < actors.size(); j++)
+			{
+				if (actors[i]->destroy || actors[j]->destroy) continue;
+
+				PhoenixEngine::Vector2 dir = actors[i]->transform.position - actors[j]->transform.position;
+				float distance = dir.Length();
+				if (distance < actors[i]->GetRadius() + actors[j]->GetRadius()) 
+				{
+					actors[i]->OnCollision(actors[j].get());
+					actors[j]->OnCollision(actors[i].get());
+				}
+			}
 		}
 
+		// destroy actor
 		auto iter = actors.begin();
 		while (iter != actors.end())
 		{
@@ -23,17 +44,16 @@ namespace PhoenixEngine
 			}
 		}
 	}
+
 	void Scene::Draw(Core::Graphics& graphics)
 	{
-		for (auto& actor : actors)
-		{
-			actor->Draw(graphics);
-		}
+		std::for_each(actors.begin(), actors.end(), [graphics](auto& actor) mutable {actor->Draw(graphics); });
 	}
+
 	void Scene::AddActor(std::unique_ptr<Actor> actor)
 	{
-		actor.get()->scene = this;
-		actors.push_back(std::move(actor));
+		actor->scene = this;
+		newActors.push_back(std::move(actor));
 	}
 	
 	void Scene::RemoveActor(Actor* actor)

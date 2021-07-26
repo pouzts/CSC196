@@ -23,5 +23,3 @@ namespace PhoenixEngine
 		std::map<std::string, FMOD::Sound*> sounds;
 	};
 }
-
-extern PhoenixEngine::AudioSystem audioSystem;

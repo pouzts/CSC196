@@ -13,6 +13,10 @@
 // Graphics
 #include "Graphics/Shape.h"
 
+// Framework
+#include "Framework/EventSystem.h"
+#include "Framework/ResourceSystem.h"
+
 // Objects
 #include "Base/Scene.h"
 #include "Base/Actor.h"
@@ -20,6 +24,7 @@
 #include "core.h"
 #include <vector>
 #include <memory>
+#include <algorithm>
 
 namespace PhoenixEngine
 {
@@ -30,6 +35,7 @@ namespace PhoenixEngine
 		void Shutdown();
 
 		void Update(float dt);
+		void Draw(Core::Graphics graphics);
 
 		template <typename T>
 		T* Get();

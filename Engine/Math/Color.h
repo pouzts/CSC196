@@ -1,5 +1,7 @@
 #pragma once
+#define NOMINMAX
 #include "core.h"
+#include <iostream>
 
 namespace PhoenixEngine 
 {
@@ -20,6 +22,7 @@ namespace PhoenixEngine
 		Color operator + (const Color& color) { return{r + color.r, b + color.b, g + color.g}; }
 		Color operator - (const Color& color) { return{r - color.r, b - color.b, g - color.g}; }
 		Color operator * (float s) const { return Color{ r * s, g * s, b * s }; }
+
 		operator DWORD() const { return ToRGB(); }
 
 		DWORD ToRGB() const
@@ -29,6 +32,8 @@ namespace PhoenixEngine
 			BYTE blue = static_cast<BYTE>(b * 255); // 0-1 -> 0-255
 			return (red | green << 8 | blue << 16); // 0-1 -> 0-255
 		}
+
+		friend std::istream& operator >> (std::istream& stream, Color& c);
 
 		static const Color white;
 		static const Color red;

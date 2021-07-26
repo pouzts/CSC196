@@ -3,12 +3,13 @@
 
 namespace PhoenixEngine
 {
-	void Actor::Update(float dt)
-	{
-	}
-
 	void Actor::Draw(Core::Graphics& graphics)
 	{
 		shape->Draw(graphics, transform);
+	}
+	
+	float Actor::GetRadius()
+	{
+		return shape->radius * transform.scale;
 	}
 }

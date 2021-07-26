@@ -19,8 +19,10 @@ namespace PhoenixEngine {
 
 		for (size_t i = 0; i < points.size() - 1; i++)
 		{
-			PhoenixEngine::Vector2 p1 = transform.position + (Vector2::Rotate(points[i], transform.rotation) * transform.scale);
-			PhoenixEngine::Vector2 p2 = transform.position + (Vector2::Rotate(points[i + 1], transform.rotation) * transform.scale);
+			//PhoenixEngine::Vector2 p1 = transform.position + (Vector2::Rotate(points[i], transform.rotation) * transform.scale);
+			//PhoenixEngine::Vector2 p2 = transform.position + (Vector2::Rotate(points[i + 1], transform.rotation) * transform.scale);
+			PhoenixEngine::Vector2 p1 = transform.position + (transform.matrix * points[i]);
+			PhoenixEngine::Vector2 p2 = transform.position + (transform.matrix * points[i + 1]);
 
 			graphics.DrawLine(p1.x, p1.y, p2.x, p2.y);
 		}
@@ -35,7 +37,7 @@ namespace PhoenixEngine {
 		{
 			success = true;
 
-			color = Color::yellow;
+			stream >> color;
 
 			std::string line;
 			std::getline(stream, line);
@@ -50,6 +52,16 @@ namespace PhoenixEngine {
 			}
 		}
 
+		ComputeRadius();
+
 		return success;
+	}
+	
+	void Shape::ComputeRadius()
+	{
+		for (auto& point : points)
+		{
+			radius = std::max(radius, point.Length());
+		}
 	}
 }

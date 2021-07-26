@@ -1,7 +1,5 @@
 #include "AudioSystem.h"
 
-PhoenixEngine::AudioSystem audioSystem;
-
 namespace PhoenixEngine
 {
 	void AudioSystem::Startup()

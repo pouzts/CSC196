@@ -1,116 +1,84 @@
-#include "Engine.h"
+#include "Game.h"
+
 #include "Actors/Player.h"
 #include "Actors/Enemy.h"
 #include "Actors/Projectile.h"
+#include <variant>
 
-#include <iostream>
-#include <vector>
-#include <string>
-
-std::vector<PhoenixEngine::Vector2> points = { {-5, -5}, {5, -5}, {0, 10}, {-5, -5} };
-PhoenixEngine::Transform transform{ PhoenixEngine::Vector2{400, 300}, 0, 3 };
-
-const float speed = 250;
-float timer = 0;
-
-PhoenixEngine::Vector2 psPosition;
-
-float deltaTime;
-float gameTime = 0;
-
-PhoenixEngine::Engine engine;
-PhoenixEngine::Scene scene;
+Game game;
 
 bool Update(float dt)
 {
-	deltaTime = dt;
-	gameTime += deltaTime;
-
 	bool quit = Core::Input::IsPressed(Core::Input::KEY_ESCAPE);
 	
-	timer += dt;
+	game.Update(dt);
 	
-	int x, y;
-	Core::Input::GetMousePos(x, y);
-	psPosition.x = static_cast<float>(x);
-	psPosition.y = static_cast<float>(y);
-	
-	if (Core::Input::IsPressed(Core::Input::BUTTON_LEFT))
-	{
-		std::vector<PhoenixEngine::Color> colors = {PhoenixEngine::Color::white, PhoenixEngine::Color::red, PhoenixEngine::Color::blue };
-		engine.Get<PhoenixEngine::ParticleSystem>()->Create(psPosition, 150, 3, colors[PhoenixEngine::RandomRangeInt(0, colors.size())], 150);
-		engine.Get<PhoenixEngine::AudioSystem>()->PlayAudio("explosion");
-	}
-
-	PhoenixEngine::Vector2 input;
-
-	//engine.Get<PhoenixEngine::ParticleSystem>()->Create(transform.position, 3, 2, PhoenixEngine::Color::white, 50);
-	
-	scene.GetActor<Player>()->shape->color = PhoenixEngine::Color{ PhoenixEngine::RandomRange(0.0f, 1.0f), PhoenixEngine::RandomRange(0.0f, 1.0f), PhoenixEngine::RandomRange(0.0f, 1.0f) };
-	scene.GetActor<Enemy>()->shape->color = PhoenixEngine::Color{ PhoenixEngine::RandomRange(0.0f, 1.0f), PhoenixEngine::RandomRange(0.0f, 1.0f), PhoenixEngine::RandomRange(0.0f, 1.0f) };
-
-	engine.Update(dt);
-	scene.Update(dt);
+	//int x, y;
+	//Core::Input::GetMousePos(x, y);
+	//psPosition.x = static_cast<float>(x);
+	//psPosition.y = static_cast<float>(y);
+	//
+	//if (Core::Input::IsPressed(Core::Input::BUTTON_LEFT))
+	//{
+	//	std::vector<PhoenixEngine::Color> colors = {PhoenixEngine::Color::white, PhoenixEngine::Color::red, PhoenixEngine::Color::blue };
+	//	engine.Get<PhoenixEngine::ParticleSystem>()->Create(psPosition, 150, 3, colors[PhoenixEngine::RandomRangeInt(0, colors.size())], 150);
+	//	engine.Get<PhoenixEngine::AudioSystem>()->PlayAudio("explosion");
+	//}
 
 	return quit;
 }
 
 void Draw(Core::Graphics& graphics)
 {
-	float scale = 2 + std::sin(timer) * 10;
-	scene.Draw(graphics);
-	engine.Get<PhoenixEngine::ParticleSystem>()->Draw(graphics);
-
-	PhoenixEngine::Color color = PhoenixEngine::Lerp(PhoenixEngine::Color::green, PhoenixEngine::Color::blue, psPosition.x / 800);
-	graphics.SetColor(color);
-
-	graphics.DrawString(10, 10, std::to_string(deltaTime).c_str());
-	graphics.DrawString(10, 20, std::to_string(gameTime).c_str());
-	graphics.DrawString(10, 30, std::to_string(1 / deltaTime).c_str());
-	graphics.DrawString(10, 40, std::to_string(scene.GetActor<Player>()->transform.position.x).c_str());
-	graphics.DrawString(10, 50, std::to_string(scene.GetActor<Player>()->transform.position.y).c_str());
-	graphics.DrawString(10, 60, std::to_string(scene.GetActors<Projectile>().size()).c_str());
+	game.Draw(graphics);
 }
 
-void Init()
+int inc(int i) { return ++i; }
+int dec(int i) { return --i; }
+
+union Data
 {
-	std::shared_ptr<PhoenixEngine::Shape> shape = std::make_shared<PhoenixEngine::Shape>();
-	shape->Load("playershape.txt");
+	int i;
+	char str[5];
+	bool b;
+};
 
-	//std::shared_ptr<PhoenixEngine::Shape> playerShape = std::make_shared<PhoenixEngine::Shape>(points, PhoenixEngine::Color::yellow);
-	std::shared_ptr<PhoenixEngine::Shape> enemyShape = std::make_shared<PhoenixEngine::Shape>(points, PhoenixEngine::Color::blue);
-
-	engine.Get<PhoenixEngine::AudioSystem>()->AddAudio("explosion", "explosion.wav");
-	scene.AddActor(std::make_unique<Player>(PhoenixEngine::Transform{ PhoenixEngine::Vector2{400, 300}, 0, 3 }, shape, speed));
-	
-	for (size_t i = 0; i < 10; i++)
-	{
-		scene.AddActor(std::make_unique<Enemy>(PhoenixEngine::Transform{ PhoenixEngine::Vector2{PhoenixEngine::RandomRange(0.0f, 800.0f), PhoenixEngine::RandomRange(0.0f, 600.0f)}, PhoenixEngine::RandomRange(0.0f, PhoenixEngine::TwoPi), 3 }, enemyShape, speed));
-	}
-}
 
 int main()
 {
-	srand(123);
-	std::cout << RAND_MAX << std::endl;
-	for (size_t i = 0; i < 10; i++)
-	{
-		int r = rand();
-		std::cout << r  << " " << r / static_cast<float>(RAND_MAX) << std::endl;
-	}
-	PhoenixEngine::Random();
+	Data data = { 0 };
+
+	data.b = true;
+	data.i = 534;
+	data.str[1] = '#';
+
+	std::cout << data.i << std::endl;
+	std::cout << data.b << std::endl;
+	std::cout << data.str << std::endl;
+
+	std::variant<int, std::string, float, bool> var;
+
+	var = 20;
+	var = true;
+
+	//std::cout << std::get<int>(var) << std::endl;
+	std::cout << std::get<bool>(var) << std::endl;
+	std::cout << std::get<3>(var) << std::endl;
+	
+	/*int (*operation)(int);
+	operation = &inc;
+
+	std::cout << operation(5) << std::endl;*/
 
 	char name[] = "CSC196";
 	Core::Init(name, 800, 600, 120);
 	Core::RegisterUpdateFn(Update);
 	Core::RegisterDrawFn(Draw);
 
-	engine.Startup();
-
-	Init();
+	game.Initialize();
 
 	Core::GameLoop();
 	Core::Shutdown();
 
-	engine.Shutdown();
+	game.Shutdown();
 }

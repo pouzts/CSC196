@@ -12,8 +12,8 @@ namespace PhoenixEngine
 		Vector2(float x, float y) : x{ x }, y{ y } {}
 		Vector2(int x, int y) : x{ static_cast<float>(x) }, y{ static_cast<float>(y) } {}
 
-		float operator [] (size_t index) { return (&x)[index]; }
-		const float& operator [] (size_t index) const { return(&x)[index]; }
+		float operator [] (size_t index) const { return (&x)[index]; }
+		float& operator [] (size_t index) { return(&x)[index]; }
 
 		void Set(float x, float y) { this->x = x; this->y = y; }
 
@@ -52,6 +52,9 @@ namespace PhoenixEngine
 
 		static float Distance(const Vector2& v1, const Vector2& v2);
 		static Vector2 Rotate(const Vector2& v, float radians);
+		static float Angle(const Vector2& v1, const Vector2& v2);
+		static float SignedAngle(const Vector2& v1, const Vector2& v2);
+		static float Dot(const Vector2& v1, const Vector2& v2);
 
 		friend std::istream& operator >> (std::istream& stream, Vector2& v);
 
@@ -90,7 +93,7 @@ namespace PhoenixEngine
 
 	inline float Vector2::Distance(const Vector2& v1, const Vector2& v2) 
 	{
-		return (v1 - v2).Length();;
+		return (v1 - v2).Length();
 	}
 
 	inline Vector2 Vector2::Rotate(const Vector2& v, float radians)
@@ -98,5 +101,23 @@ namespace PhoenixEngine
 		float x = v.x * std::cos(radians) - v.y * std::sin(radians);
 		float y = v.x * std::sin(radians) + v.y * std::cos(radians);
 		return { x, y };
+	}
+
+	inline float Vector2::Angle(const Vector2& v1, const Vector2& v2)
+	{
+		return std::acos(Dot(v1, v2));
+	}
+	
+	inline float Vector2::SignedAngle(const Vector2& v1, const Vector2& v2)
+	{
+		float y = v1.x * v2.y - v1.y * v2.x;
+		float x = v1.y * v2.x - v1.x * v2.y;
+		
+		return std::atan2(y, x);
+	}
+
+	inline float Vector2::Dot(const Vector2& v1, const Vector2& v2)
+	{
+		return (v1.x * v2.x) + (v1.y * v2.y);
 	}
 }

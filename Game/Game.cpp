@@ -144,7 +144,7 @@ void Game::UpdateLevelStart(float dt)
 {
 	scene->AddActor(std::make_unique<Player>(PhoenixEngine::Transform{ PhoenixEngine::Vector2{400, 300}, 0, 3 }, engine->Get<PhoenixEngine::ResourceSystem>()->Get<PhoenixEngine::Shape>("playershape.txt"), 300.0f));
 
-	for (size_t i = 0; i < 1 + level; i++)
+	for (size_t i = 0; i < level; i++)
 	{
 		bool hasSpawned = false;
 		while (!hasSpawned) {
@@ -158,7 +158,7 @@ void Game::UpdateLevelStart(float dt)
 		}
 	}
 
-	for (size_t i = 0; i < 3 + level; i++)
+	for (size_t i = 0; i < 2 + level; i++)
 	{
 		bool hasSpawned = false;
 		while (!hasSpawned) {

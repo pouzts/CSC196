@@ -22,10 +22,7 @@ void Enemy::Update(float dt)
 		{
 			fireTimer = fireRate;
 
-			std::shared_ptr<PhoenixEngine::Shape> bulletShape = std::make_shared<PhoenixEngine::Shape>();
-			bulletShape->Load("enemybulletshape.txt");
-
-			std::unique_ptr<Projectile> projectile = std::make_unique<Projectile>(transform, scene->engine->Get<PhoenixEngine::ResourceSystem>()->Get<PhoenixEngine::Shape>("bulletshape.txt"), 600.0f);
+			std::unique_ptr<Projectile> projectile = std::make_unique<Projectile>(transform, scene->engine->Get<PhoenixEngine::ResourceSystem>()->Get<PhoenixEngine::Shape>("enemybulletshape.txt"), 600.0f);
 			projectile->tag = "Enemy";
 			scene->AddActor(std::move(projectile));
 

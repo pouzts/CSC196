@@ -24,44 +24,44 @@ namespace PhoenixEngine
 
 	inline Matrix22::Matrix22()
 	{
-		m[0][0] = 0; m[0][1] = 0;
-		m[1][0] = 0; m[1][1] = 0;
+		m[0][0] = 0; m[1][0] = 0;
+		m[0][1] = 0; m[1][1] = 0;
 	}
 
 	inline Matrix22::Matrix22(const Vector2& column1, const Vector2& column2)
 	{
-		m[0][0] = column1[0]; m[0][1] = column2[0];
-		m[1][0] = column1[1]; m[1][1] = column2[1];
+		m[0][0] = column1[0]; m[1][0] = column2[0];
+		m[0][1] = column1[1]; m[1][1] = column2[1];
 	}
 	
 	inline void Matrix22::Scale(float s)
 	{
-		m[0][0] = s; m[0][1] = 0;
-		m[1][0] = 0; m[1][1] = s;
+		m[0][0] = s; m[1][0] = 0;
+		m[0][1] = 0; m[1][1] = s;
 	}
 	
 	inline void Matrix22::Scale(float sx, float sy)
 	{
-		m[0][0] = sx; m[0][1] = 0;
-		m[1][0] = 0;  m[1][1] = sy;
+		m[0][0] = sx; m[1][0] = 0;
+		m[0][1] = 0;  m[1][1] = sy;
 	}
 	
 	inline void Matrix22::Scale(const Vector2& s)
 	{
-		m[0][0] = s.x; m[0][1] = 0;
-		m[1][0] = 0; m[1][1] = s.y;
+		m[0][0] = s.x; m[1][0] = 0;
+		m[0][1] = 0; m[1][1] = s.y;
 	}
 	
 	inline void Matrix22::Rotate(float angle)
 	{
-		m[0][0] =  std::cos(angle); m[0][1] = std::sin(angle);
-		m[1][0] = -std::sin(angle); m[1][1] = std::cos(angle);
+		m[0][0] =  std::cos(angle); m[1][0] = std::sin(angle);
+		m[0][1] = -std::sin(angle); m[1][1] = std::cos(angle);
 	}
 
 	inline void Matrix22::Identity()
 	{
-		m[0][0] = 1; m[0][1] = 0;
-		m[1][0] = 0; m[1][1] = 1;
+		m[0][0] = 1; m[1][0] = 0;
+		m[0][1] = 0; m[1][1] = 1;
 	}
 
 	inline Matrix22 Matrix22::operator * (const Matrix22& mx) const

@@ -147,11 +147,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Actors\Astroid.cpp" />
     <ClCompile Include="Actors\Enemy.cpp" />
     <ClCompile Include="Actors\Player.cpp" />
     <ClCompile Include="Actors\Projectile.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="PowerUp.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Engine\Engine.vcxproj">
@@ -159,10 +161,12 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Actors\Astroid.h" />
     <ClInclude Include="Actors\Enemy.h" />
     <ClInclude Include="Actors\Player.h" />
     <ClInclude Include="Actors\Projectile.h" />
     <ClInclude Include="Game.h" />
+    <ClInclude Include="PowerUp.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -10,6 +10,7 @@ public:
 		StartGame,
 		StartLevel,
 		Game,
+		EndLevel,
 		GameOver
 	};
 
@@ -22,8 +23,10 @@ public:
 
 private:
 	void DrawTitle(Core::Graphics& graphics);
+	
 	void UpdateTitle(float dt);
 	void UpdateLevelStart(float dt);
+	
 	void OnAddPoints(const PhoenixEngine::Event& event);
 	void OnPlayerDead(const PhoenixEngine::Event& event);
 
@@ -38,6 +41,7 @@ private:
 	void (Game::* stateFunction)(float) = nullptr;
 
 	size_t score = 0;
-	size_t lives = 0;
+	size_t health = 0;
+	size_t level = 1;
 };
 

@@ -14,7 +14,6 @@ void Enemy::Update(float dt)
 
 		float turnAngle = PhoenixEngine::Vector2::SignedAngle(forward, direction.Normalized());
 		transform.rotation = transform.rotation + turnAngle * (3 * dt);
-		//transform.rotation = PhoenixEngine::Lerp(transform.rotation, transform.rotation + turnAngle, 2 * dt);
 
 		float angle = PhoenixEngine::Vector2::Angle(forward, direction.Normalized());
 		
@@ -36,8 +35,6 @@ void Enemy::Update(float dt)
 		transform.position += PhoenixEngine::Vector2::Rotate(PhoenixEngine::Vector2::right, transform.rotation) * speed * dt;
 		transform.position.x = PhoenixEngine::Wrap(transform.position.x, 0.0f, 800.0f);
 		transform.position.y = PhoenixEngine::Wrap(transform.position.y, 0.0f, 600.0f);
-
-		transform.Update();
 	}
 }
 
